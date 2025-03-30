@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Questions
+{% endblock %}
+
+{% block headline %}
+    <div class="sorted-mode">
+        <a class="active-sorted">New questions</a>
+        <a class="inactive-sorted" href="test"  >Hot questions</a>
+    </div>
+{% endblock %}
+
+{% block welcom-text %}
+    {% if not request.user.is_authenticated %}
+        {% include 'welcom_block.html' %}
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    <div class="question-container">
+        {% include 'question_card.html' %}
+        {% include 'question_card.html' %}
+        {% include 'question_card.html' %}
+        {% include 'pagination.html' %}
+    </div>
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

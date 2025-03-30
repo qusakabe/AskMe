@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Settings
+{% endblock %}
+
+{% block headline %}
+    <div class="base-headline">Settings: Dr. Pepper</div>
+{% endblock %}
+
+{% block main %}
+    <div class="settings-block">
+        <form method="post" class="settings-form-container">
+            <div class="settings-input-container">
+                <div class="settings-form-headline">Avatar:</div>
+                <div class="chose-image-block">
+                    <img src="{% static 'img/avatar.jpg' %}" alt="Фото профиля" class="profile-image" id="profile-image-preview">
+                    <label for="image-upload" class = "no-color-button">Choose file</label>
+                    <input type="file" id="image-upload" accept="image/*">
+                </div>
+            </div>
+            <div class="settings-input-container">
+                <div class="settings-form-headline">Login:</div>
+                <textarea class="small-input-container" placeholder="">Dr. Pepper</textarea>
+            </div>
+            <div class="settings-input-container">
+                <div class="settings-form-headline">Email:</div>
+                <textarea class="small-input-container" placeholder="">dr.pepper@mail.ru</textarea>
+            </div>
+            <div class="settings-input-container">
+                <div class="settings-form-headline">Name:</div>
+                <textarea class="small-input-container" placeholder="">Dr. Pepper</textarea>
+            </div>
+            <div class="buttons-container">
+                <button type="submit" class="base-blue-button">
+                    <div class="base-blue-text">Save</div>
+                </button>
+                <button type="reset" class="no-color-button">
+                    <div class="base-blue-text">Cancel</div>
+                </button>
+            </div>
+        </form>
+    </div>
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

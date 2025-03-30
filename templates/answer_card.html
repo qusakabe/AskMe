@@ -1,0 +1,27 @@
+{% load static %}
+
+<div class="answer">
+    <img src="{% static 'img/avatar.jpg' %}" alt="Фото" class="profile-image">
+    <div class="answer-info">
+        <div class="answer-text-mini">He walked out of the fire station and along the midnight street toward the
+            subway where the silent, air-propelled train slid soundlessly down its
+            lubricated flue in the earth and let him out with a great puff of warm air an
+            to the cream-tiled escalator rising to the suburb.
+        </div>
+        <div class="raiting-answers-container">
+            <div class="raiting-box">
+                <div class="raiting-counter">256</div>
+                <div class="like-button" onclick="return Like();">
+                    <img src="{% static 'img/raiting_buttons/like.svg' %}" alt="Like" class="like-button">
+                </div>
+                <div class="dislike-button" onclick="return Dislike();">
+                    <img src="{% static 'img/raiting_buttons/dislike.svg' %}" alt="Dislike" class="dislike-button">
+                </div>
+            </div>
+            <button class="correct-button" id="correct-button">
+                <img id="correct-icon" class="correct-icon" src="{% static 'img/correct-icon.svg' %}">
+                mark correct
+            </button>
+        </div>
+    </div>
+</div>

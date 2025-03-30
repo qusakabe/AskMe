@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <nav class="navbar">
+        <a class="logo" href="/">AskME</a>
+        <div class="header-search">
+            <input type="text" placeholder="Search..." class="header-search-input">
+            <button class="button-search">Search</button>
+        </div>
+        <div class="account-actions">
+            {% if not request.user.is_authenticated %}
+                {% include 'base_authorized.html' %}
+            {% else %}
+                {% include 'base_unauthorized.html' %}
+            {% endif %}
+        </div>
+    </nav>
+    {% block welcom-text %}{% endblock %}
+    <div class="main-container">
+        {% block headline %}{% endblock %}
+        <div class="content-block">
+            {% block main %}{% endblock %}
+            <div class="tags-users-block">
+                {% include 'tags_members_block.html' %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

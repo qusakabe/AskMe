@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block headline %}
+    <div class="base-headline">Log in</div>
+{% endblock %}
+
+{% block main %}
+    <div class="login-block">
+        <form method="post" class="login-form-container" onsubmit="return validateForm();">
+            <div class="login-input-container">
+                <div class="login-form-headline">Login:</div>
+                <div class="input-field">
+                    <textarea class="small-input-container" placeholder="Your login" id="login"></textarea>
+                    <div class="errors-block" id="login-auth-error">
+                    </div>
+                </div>
+            </div>
+            <div class="login-input-container">
+                <div class="login-form-headline">Password:</div>
+                <div class="input-field">
+                    <textarea class="small-input-container" placeholder="Your password" id = "password"></textarea>
+                    <div class="errors-block" id="password-auth-error">
+                    </div>
+                </div>
+            </div>
+            <div class="buttons-container">
+                <button type="submit" class="base-blue-button">
+                    <div class="base-blue-text">Log in</div>
+                </button>
+                <button type="reset" class="no-color-button">
+                    <div class="base-blue-text">Create new account</div>
+                </button>
+            </div>
+        </form>
+    </div>
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

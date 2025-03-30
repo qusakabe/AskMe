@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Question
+{% endblock %}
+
+{% block headline %}
+    <div class="base-headline">Question</div>
+{% endblock %}
+
+{% block main %}
+    <div class="question-container">
+        {% include 'question_card.html' %}
+        <div class="base-headline">Answers</div>
+        <div class="answers-block">
+            {% include 'answer_card.html' %}
+            {% include 'answer_card.html' %}
+            {% include 'answer_card.html' %}
+        </div>
+        {% include 'pagination.html' %}
+        <div class="base-headline">You Answer</div>
+            <form method="post" onsubmit="return validateAnswer();">
+                <textarea class="input-container" placeholder="You answer here...." id="answer-input"></textarea>
+                <div class="errors-block" id="new-answer-error"></div>
+                <button type="submit" class="base-blue-button">
+                    <div class="base-blue-text">Answer</div>
+                </button>
+            </form>
+        </div>
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock %}
