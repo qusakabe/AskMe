@@ -1,5 +1,22 @@
-<div class="pagination">
-    <a href="#" class="prev disabled" id="prev">Назад</a>
-    <div class="pages" id="pages-container"></div>
-    <a href="#" class="next" id="next">Вперёд</a>
+{% load static %}
+<div class="pagination" data-total-items="{{ page.paginator.count }}">
+    {% if page.has_previous %}
+        <a href="?page={{ page.previous_page_number }}" class="prev {% if not page.has_previous %}disabled{% endif %}" id="prev">
+            Назад
+        </a>
+    {% endif %}
+
+    <div class="pages" id="pages-container">
+        {% for num in page.paginator.page_range %}
+            <a href="?page={{ num }}" class="page {% if num == page.number %}active{% endif %}">
+                {{ num }}
+            </a>
+        {% endfor %}
+    </div>
+
+    {% if page.has_next %}
+        <a href="?page={{ page.next_page_number }}" class="next {% if not page.has_next %}disabled{% endif %}" id="next">
+            Вперёд
+        </a>
+    {% endif %}
 </div>

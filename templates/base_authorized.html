@@ -2,7 +2,7 @@
 
 <img src="{% static 'img/avatar.jpg' %}" alt="" class="account-image">
 <div class="account-name">Dr. Peper</div>
-<a class="settings-button" href="/settings/">
+<a class="settings-button" href="{% url 'settings' %}">
     <img src="{% static 'img/account_actions_icons/settings-icon.svg' %}" alt="Settings" class="settings-icon">
 </a>
 <a class="log-out-button">

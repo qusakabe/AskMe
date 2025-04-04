@@ -8,7 +8,7 @@
 {% block headline %}
     <div class="sorted-mode">
         <a class="active-sorted">New questions</a>
-        <a class="inactive-sorted" href="test"  >Hot questions</a>
+        <a class="inactive-sorted" href="{% url 'hot' %}"  >Hot questions</a>
     </div>
 {% endblock %}
 
@@ -20,10 +20,10 @@
 
 {% block main %}
     <div class="question-container">
-        {% include 'question_card.html' %}
-        {% include 'question_card.html' %}
-        {% include 'question_card.html' %}
+        {% for question in page %}
+            {% include 'question_card.html' %}
+        {% endfor %}
         {% include 'pagination.html' %}
     </div>
-    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'js/script.js' %}" defer></script>
 {% endblock %}

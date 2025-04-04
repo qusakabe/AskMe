@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
     const imageUpload = document.getElementById("image-upload");
     const profileImagePreview = document.getElementById("profile-image-preview");
 
@@ -254,104 +254,106 @@ ratingBoxes.forEach((ratingBox) => {
     }
 });
 
-// Проверяем, есть ли пагинатор на странице
+
 const prevButton = document.getElementById("prev");
 const nextButton = document.getElementById("next");
 const pagesContainer = document.getElementById("pages-container");
+const paginationElement = document.querySelector(".pagination"); // Исправлено на querySelector
 
-const totalPages = 30; // Общее количество страниц
-let currentPage = 1;   // Текущая активная страница
-const maxVisiblePages = 3; // Количество видимых страниц
 
-// Проверка на наличие пагинатора
-const isPaginatorAvailable = prevButton && nextButton && pagesContainer;
 
-if (isPaginatorAvailable) {
+
+
+const urlParams = new URLSearchParams(window.location.search);
+let currentPage = Number(urlParams.get('page')) || 1;
+
+const maxVisiblePages = 5; // Количество отображаемых страниц
+
+if (pagesContainer) {
+    const totalItems = Number(paginationElement.getAttribute('data-total-items')) || 0;
+    const totalPages = Math.max(1, Math.ceil(totalItems / 10)); // Количество страниц
     renderPages();
-}
 
-// Функция для рендеринга страниц
-function renderPages() {
-    if (!isPaginatorAvailable) return; // Если нет пагинатора, не рендерим
+        function renderPages() {
+        pagesContainer.innerHTML = "";
 
-    pagesContainer.innerHTML = "";
-    let startPage = Math.max(1, currentPage - 2);
-    let endPage = Math.min(totalPages, Math.max(5, currentPage + 2));
+        let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+        let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+        console.log("start: ",startPage);
+        console.log("end: ",endPage);
 
-    // Добавляем первую страницу, если она скрыта
-    if (startPage > 1) {
-        createPage(1);
-        if (startPage > 2) {
-            createDots();
+        if (endPage === totalPages) {
+            startPage = Math.max(1, totalPages - maxVisiblePages + 1);
         }
-    }
 
-    // Основные видимые страницы
-    for (let i = startPage; i <= endPage; i++) {
-        createPage(i, i === currentPage);
-    }
+        if (startPage > 1) {
+            createPage(1);
+            if (startPage > 2) createDots();
+        }
 
-    // Добавляем последнюю страницу, если она скрыта
-    if (endPage < totalPages) {
+        for (let i = startPage; i <= endPage; i++) {
+            createPage(i, i === currentPage);
+        }
+
         if (endPage < totalPages - 1) {
             createDots();
         }
-        createPage(totalPages);
+
+        if (endPage < totalPages) {
+            createPage(totalPages);
+        }
+
+        if (prevButton) {
+            prevButton.classList.toggle("disabled", currentPage === 1);
+        }
+
+        if (nextButton) {
+            nextButton.classList.toggle("disabled", currentPage === totalPages);
+        }
+
     }
 
-    // Обновляем состояние кнопок "Назад" и "Вперёд"
-    prevButton.classList.toggle("disabled", currentPage === 1);
-    nextButton.classList.toggle("disabled", currentPage === totalPages);
-}
+    function createPage(number, isActive = false) {
+        const page = document.createElement("a");
+        page.href = `?page=${number}`;
+        page.classList.add("page");
+        page.textContent = number;
 
-// Функция для создания страницы
-function createPage(number, isActive = false) {
-    const page = document.createElement("a");
-    page.href = "#";
-    page.classList.add("page");
-    page.textContent = number;
+        if (isActive) {
+            page.classList.add("active");
+        }
 
-    if (isActive) {
-        page.classList.add("active");
+        page.addEventListener("click", () => {
+            window.location.href = `?page=${number}`;
+        });
+
+        pagesContainer.appendChild(page);
     }
 
-    page.addEventListener("click", (e) => {
-        e.preventDefault();
-        currentPage = number;
-        renderPages();
-    });
+    function createDots() {
+        const dots = document.createElement("span");
+        dots.classList.add("dots");
+        dots.textContent = "...";
+        pagesContainer.appendChild(dots);
+    }
 
-    pagesContainer.appendChild(page);
-}
+    if (prevButton) {
+        prevButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            if (currentPage > 1) {
+                window.location.href = `?page=${currentPage - 1}`;
+            }
+        });
+    }
 
-// Функция для создания многоточия
-function createDots() {
-    const dots = document.createElement("span");
-    dots.classList.add("dots");
-    dots.textContent = "...";
-    pagesContainer.appendChild(dots);
-}
-
-// Обработчик для кнопки "Назад"
-if (prevButton) {
-    prevButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        if (currentPage > 1) {
-            currentPage--;
-            renderPages();
-        }
-    });
-}
-
-// Обработчик для кнопки "Вперёд"
-if (nextButton) {
-    nextButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        if (currentPage < totalPages) {
-            currentPage++;
-            renderPages();
-        }
-    });
+    if (nextButton) {
+        nextButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            if (currentPage < totalPages) {
+                window.location.href = `?page=${currentPage + 1}`;
+            }
+        });
+    }
 }
 
 // Массив доступных тегов

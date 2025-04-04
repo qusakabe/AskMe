@@ -3,13 +3,18 @@
 <div class="question">
     <img src="{% static 'img/avatar.jpg' %}" alt="Фото профиля" class="profile-image">
     <div class="question-info">
-        <a class="question-text" href="/question/">CMake can't find my Android NDK library file in Flutter project</a>
+        <a class="question-text" href="{% url 'question' %}">{{ question.title }}</a>
         <div class="question-text-mini">CMake can't find my Android NDK library file in Flutter project I'm trying to integrate a C++ library with Flutter using FFI. I have a pre-compiled libMesh.so file and want to create a wrapper ...</div>
         <div class="question-footer">
             <div class="question-tags">
-                <span class="tag">black-jack</span>
-                <span class="tag">bender</span>
-                <span class="tag">bender</span>
+                {% if question.tags %}
+                    {% for question_tag in question.tags %}
+                        <span class="tag">{{ question_tag }}</span>
+                    {% endfor %}
+                {% else %}
+                    <span class="tag">some tag</span>
+                    <span class="tag">some tag</span>
+                {% endif %}
             </div>
             <div class="raiting-answers-container" id="raitingBox">
                 <div class="raiting-box">
@@ -21,7 +26,7 @@
                         <img src="{% static 'img/raiting_buttons/dislike.svg' %}" alt="Dislike" class="dislike-button">
                     </div>
                 </div>
-                <a href = '/question/' class="answers-button">3 Answers</a>
+                <a href = "{% url 'question' %}" class="answers-button">3 Answers</a>
             </div>
         </div>
     </div>

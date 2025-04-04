@@ -1,10 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Questions
+{% endblock %}
+
+{% block headline %}
+    <div class="sorted-mode">
+        <a class="active-sorted">Hot questions</a>
+        <a class="inactive-sorted" href="{% url 'index' %}">New questions</a>
+    </div>
+{% endblock %}
+
+{% block welcom-text %}
+    {% if not request.user.is_authenticated %}
+        {% include 'welcom_block.html' %}
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    <div class="question-container">
+        {% for question in page %}
+            {% include 'question_card.html' %}
+        {% endfor %}
+        {% include 'pagination.html' %}
+    </div>
+    <script src="{% static 'js/script.js' %}" defer></script>
+{% endblock %}

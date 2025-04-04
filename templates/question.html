@@ -14,9 +14,9 @@
         {% include 'question_card.html' %}
         <div class="base-headline">Answers</div>
         <div class="answers-block">
-            {% include 'answer_card.html' %}
-            {% include 'answer_card.html' %}
-            {% include 'answer_card.html' %}
+            {% for answer in page %}
+                {% include 'answer_card.html' %}
+            {% endfor %}
         </div>
         {% include 'pagination.html' %}
         <div class="base-headline">You Answer</div>
