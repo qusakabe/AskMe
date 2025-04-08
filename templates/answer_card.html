@@ -6,7 +6,7 @@
         <div class="answer-text-mini">{{ answer.text}}</div>
         <div class="raiting-answers-container">
             <div class="raiting-box">
-                <div class="raiting-counter">256</div>
+                <div class="raiting-counter">{{ answer.rating }}</div>
                 <div class="like-button" onclick="return Like();">
                     <img src="{% static 'img/raiting_buttons/like.svg' %}" alt="Like" class="like-button">
                 </div>

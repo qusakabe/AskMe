@@ -1,6 +1,8 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.core.paginator import PageNotAnInteger, EmptyPage
+from app.models import Question, TagManager, Tag, Answer
+from django.http import HttpResponseNotFound
 
 
 def paginate(objects_list, request, per_page=10):
@@ -20,74 +22,56 @@ def paginate(objects_list, request, per_page=10):
     return page
 
 def index(request):
-    #тестовые объекты вопросов
-    questions = [
-        {"id": i,
-         "title": "CMake can't find my Android NDK library file in Flutter project",
-         "text": "CMake can't find my Android NDK library file in Flutter project I'm trying to integrate a C++ library with Flutter using FFI. I have a pre-compiled libMesh.so file and want to create a wrapper ...",
-         "tags": ['bender','black-jack','bender']}
-        for i in range(1, 91)
-    ]
+    questions = Question.objects.get_new()
     page = paginate(questions,request)
-    return render(request, 'index.html', context={'page': page, 'questions': questions})
+    tags = Tag.objects.get_top()
+
+    return render(request, 'index.html', context={'page': page, 'questions': questions, 'tags': tags})
 
 
-def question(request):
-    answers = [
-        {"id": i,
-         "text": "CMake can't find my Android NDK library file in Flutter project I'm trying to integrate a C++ library with Flutter using FFI. I have a pre-compiled libMesh.so file and want to create a wrapper ...",
-         }
-        for i in range(1, 91)
-    ]
+def question(request,id):
+    try:
+        question = Question.objects.get(id=id)
+    except Question.DoesNotExist:
+        return HttpResponseNotFound()
+
+    answers = Answer.objects.get_by_question(question=question)
     page = paginate(answers,request)
-    return render(request, 'question.html', context={'page': page, 'answers': answers})
+    tags = Tag.objects.get_top()
+
+    return render(request, 'question.html', context={'page': page, 'answers': answers, 'question': question, 'tags': tags})
 
 def tag(request,id):
-    #тестовые теги
-    test_tags = {
-        0: "black-jack",
-        1: "bender",
-        2: "Python",
-        3: "C#",
-        4: "Go",
-        5: "C++",
-        6: "HTML",
-    }
+    try:
+        questions = Question.objects.get_by_tag(id)
+    except:
+        return HttpResponseNotFound()
 
-    tag = test_tags[id]
-
-    #тестовые объекты вопросов (для страницы с вопросами по тегам)
-    questions = [
-        {"id": i,
-         "title": "CMake can't find my Android NDK library file in Flutter project",
-         "text": "CMake can't find my Android NDK library file in Flutter project I'm trying to integrate a C++ library with Flutter using FFI. I have a pre-compiled libMesh.so file and want to create a wrapper ...",
-         "tags": [tag,'some-tag']}
-        for i in range(1, 91)
-    ]
     page = paginate(questions,request)
-    return render(request, 'tag.html', context={'page': page, 'questions': questions, 'tag': tag})
+    tag = Tag.objects.get(id=id)
+    tags = Tag.objects.get_top()
+
+    return render(request, 'tag.html', context={'page': page, 'questions': questions, 'tag': tag, 'tags': tags})
 
 
 def ask(request):
-    return render(request, 'ask.html')
+    tags = Tag.objects.get_top()
+    return render(request, 'ask.html',context={'tags': tags})
 
 def login(request):
-    return render(request, 'login.html')
+    tags = Tag.objects.get_top()
+    return render(request, 'login.html',context={'tags': tags})
 
 def signup(request):
-    return render(request, 'signup.html')
+    tags = Tag.objects.get_top()
+    return render(request, 'signup.html',context={'tags': tags})
 
 def settings(request):
     return render(request,'settings.html')
 
 def hot(request):
-    # тестовые объекты вопросов
-    questions = [
-        {"id": i,
-         "title": "CMake can't find my Android NDK library file in Flutter project",
-         "text": "CMake can't find my Android NDK library file in Flutter project I'm trying to integrate a C++ library with Flutter using FFI. I have a pre-compiled libMesh.so file and want to create a wrapper ...",
-         "tags": ['hot', 'hot question']}
-        for i in range(1, 91)
-    ]
+    questions = Question.objects.get_top()
     page = paginate(questions, request)
-    return render(request, 'hot.html', context={'page': page, 'questions': questions})
+    tags = Tag.objects.get_top()
+
+    return render(request, 'hot.html', context={'page': page, 'questions': questions, 'tags': tags})

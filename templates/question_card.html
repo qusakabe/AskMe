@@ -3,13 +3,13 @@
 <div class="question">
     <img src="{% static 'img/avatar.jpg' %}" alt="Фото профиля" class="profile-image">
     <div class="question-info">
-        <a class="question-text" href="{% url 'question' %}">{{ question.title }}</a>
-        <div class="question-text-mini">CMake can't find my Android NDK library file in Flutter project I'm trying to integrate a C++ library with Flutter using FFI. I have a pre-compiled libMesh.so file and want to create a wrapper ...</div>
+        <a class="question-text" href="{% url 'question' id=question.id %}">{{ question.title }}</a>
+        <div class="question-text-mini">{{ question.description }}</div>
         <div class="question-footer">
             <div class="question-tags">
                 {% if question.tags %}
-                    {% for question_tag in question.tags %}
-                        <span class="tag">{{ question_tag }}</span>
+                    {% for question_tag in question.tags.all %}
+                        <span class="tag">{{ question_tag.name }}</span>
                     {% endfor %}
                 {% else %}
                     <span class="tag">some tag</span>
@@ -18,7 +18,7 @@
             </div>
             <div class="raiting-answers-container" id="raitingBox">
                 <div class="raiting-box">
-                    <div class="raiting-counter" id="counter">256</div>
+                    <div class="raiting-counter" id="counter">{{ question.rating|floatformat:0 }}</div>
                     <div class="like-button" id="likeButton" onclick="return Like();">
                         <img src="{% static 'img/raiting_buttons/like.svg' %}" alt="Like" class="like-button">
                     </div>
@@ -26,7 +26,7 @@
                         <img src="{% static 'img/raiting_buttons/dislike.svg' %}" alt="Dislike" class="dislike-button">
                     </div>
                 </div>
-                <a href = "{% url 'question' %}" class="answers-button">3 Answers</a>
+                <a href = "{% url 'question' id=question.id %}" class="answers-button">{{ question.answer_count }} Answers</a>
             </div>
         </div>
     </div>

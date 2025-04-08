@@ -18,7 +18,9 @@
                 {% include 'answer_card.html' %}
             {% endfor %}
         </div>
-        {% include 'pagination.html' %}
+        {% if page.paginator.num_pages > 1 %}
+            {% include 'pagination.html' %}
+        {% endif %}
         <div class="base-headline">You Answer</div>
             <form method="post" onsubmit="return validateAnswer();">
                 <textarea class="input-container" placeholder="You answer here...." id="answer-input"></textarea>

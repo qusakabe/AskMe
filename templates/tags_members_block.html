@@ -1,12 +1,8 @@
 <div class="popular-tags">
     <h3>Popular tags</h3>
-    <a href="{% url 'tag' id=0 %}">black-jack</a>
-    <a href="{% url 'tag' id=1 %}">bender</a>
-    <a href="{% url 'tag' id=2 %}">Python</a>
-    <a href="{% url 'tag' id=3 %}">C#</a>
-    <a href="{% url 'tag' id=4 %}">Go</a>
-    <a href="{% url 'tag' id=5 %}">C++</a>
-    <a href="{% url 'tag' id=6 %}">HTML</a>
+    {% for tag in tags.all %}
+        <a href="{% url 'tag' id=tag.id %}" >{{tag.name}}</a>
+    {% endfor %}
 </div>
 <div class="best-members">
     <h3>Best members</h3>
