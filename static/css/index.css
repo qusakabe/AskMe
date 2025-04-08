@@ -187,6 +187,9 @@
     .question-info, .answer-info{
         margin-left: 8px;
         width: 800px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .question-text{
@@ -303,11 +306,12 @@
     }
 
     .popular-tags{
+        display: flex;
+        flex-direction: column;
         border: 2px solid var(--border-gray);
         border-radius: 6px;
         padding: 6px;
         width: 180px;
-        gap: 8px;
     }
 
 
