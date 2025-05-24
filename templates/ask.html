@@ -23,22 +23,43 @@
                 <li>Review your question and post it to the site.</li>
         </div>
 
-        <form method="post" onsubmit="return validateNewquestion();">
+        <form method="post">
+            {% csrf_token %}
             <div class="form-container">
                 <div class="base-headline">Title</div>
                 <div class="small-headline">Be specific and imagine you’re asking a question to another person.</div>
-                <textarea class="small-input-container" placeholder="Question title here...." id="question-title"></textarea>
-                <div class="errors-block" id="question-title-error"></div>
+                <input class="small-input-container{% if form.title.errors %} error{% endif %}"
+                       type="text"
+                       name="title"
+                       value="{% if form.title.value %}{{ form.title.value }}{% endif %}"
+                       placeholder="Question title here...."
+                       id="question-title">
+                <div class="errors-block" id="question-title-error">
+                    {% if form.title.errors %}{{ form.title.errors.0 }}{% endif %}
+                </div>
 
                 <div class="base-headline">Tags</div>
                 <div class="small-headline">Add up to 3 tags separated by commas.</div>
-                <textarea class="small-input-container" placeholder="Your tags here...." id="tags"></textarea>
-                <div class="errors-block" id="tags-input-error"></div>
+                <input class="small-input-container{% if form.tags.errors %} error{% endif %}"
+                       placeholder="Your tags here...."
+                       name="tags"
+                       value="{% if form.tags.value %}{{ form.tags.value }}{% endif %}"
+                       type="text"
+                       id="tags">
+                <div class="errors-block" id="tags-input-error">
+                    {% if form.tags.errors %}{{ form.tags.errors.0 }}{% endif %}
+                </div>
 
                 <div class="base-headline">What are the details of your problem?</div>
                 <div class="small-headline">Introduce the problem and expand on what you put in the title. Minimum 20 characters.</div>
-                <textarea class="input-container" placeholder="Text question here...." id="question-text"></textarea>
-                <div class="errors-block" id="question-text-error"></div>
+                <textarea class="input-container{% if form.description.errors %} error{% endif %}"
+                       type="text"
+                       name="description"
+                       placeholder="Text question here...."
+                          id="question-text">{% if form.description.value %}{{ form.description.value }}{% endif %}</textarea>
+                <div class="errors-block" id="question-text-error">
+                    {% if form.description.errors %}{{ form.description.errors.0 }}{% endif %}
+                </div>
             </div>
             <button type="submit" class="base-blue-button">
                 <div class="base-blue-text">New question</div>
