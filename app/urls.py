@@ -1,5 +1,7 @@
 from django.urls import path, include
 from . import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -10,4 +12,8 @@ urlpatterns = [
     path('settings/', views.settings, name='settings'),
     path('tag/<int:id>/', views.tag, name='tag'),
     path('hot/', views.hot, name='hot'),
+    path('logout/',views.logout_view,name='logout')
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
