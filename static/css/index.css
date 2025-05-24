@@ -2,7 +2,7 @@
         --base_blue: #1B75D0;
         --dark_blue: #155CA2;
         --light-blue: #D6E8FA;
-        --white: #FFFFFF; 
+        --white: #FFFFFF;
         --light-black: #3B4045;
         --green: #18864B;
         --gray: #ccc;
@@ -10,7 +10,7 @@
         --border-gray: #ddd;
         --light-green: #B6F5D3;
         --instuction-blue: #EDF5FD;
-        --light-red: #ffe6e6; 
+        --light-red: #ffe6e6;
         --red: #AF2A1E;
         --paginator-gray: #94959B;
     }
@@ -28,10 +28,10 @@
     }
 
     .main-container{
-        position: absolute; 
-        left: 50%; 
+        position: absolute;
+        left: 50%;
         transform: translate(-50%, 0%);
-        padding-bottom: 60px; 
+        padding-bottom: 60px;
     }
 
     .content-block{
@@ -78,8 +78,8 @@
         border: solid var(--base_blue) 2px;
         box-sizing: border-box;
         font-size: 14px;
-        height: 32px; 
-        font-family: "DM Sans", sans-serif; 
+        height: 32px;
+        font-family: "DM Sans", sans-serif;
         font-weight: 400;
         text-decoration: none;
     }
@@ -108,7 +108,7 @@
 
     .navbar-account{
         display: flex;
-        
+
     }
 
     .content-name{
@@ -808,4 +808,16 @@
         height: 15px;
         margin-right: 4px;
         display: none;
+    }
+
+    .settings-errors-block{
+        display: flex;
+        flex-direction: column;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        color: red;
+        width: 380px;
+        margin-left: 80px;
+        margin-top: 4px;
     }
