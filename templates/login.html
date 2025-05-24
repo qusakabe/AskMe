@@ -7,20 +7,23 @@
 
 {% block main %}
     <div class="login-block">
-        <form method="post" class="login-form-container" onsubmit="return validateForm();">
+        <form method="post" class="login-form-container">
+            {% csrf_token %}
             <div class="login-input-container">
                 <div class="login-form-headline">Login:</div>
                 <div class="input-field">
-                    <textarea class="small-input-container" placeholder="Your login" id="login"></textarea>
-                    <div class="errors-block" id="login-auth-error">
+                    <input name="username" type ="text" class="small-input-container" placeholder="Your login" id="login">
+                    <div class="errors-block">
+                        {% if form.general.errors %}{{ form.general.errors.0 }} {% endif %}
                     </div>
                 </div>
             </div>
             <div class="login-input-container">
                 <div class="login-form-headline">Password:</div>
                 <div class="input-field">
-                    <textarea class="small-input-container" placeholder="Your password" id = "password"></textarea>
-                    <div class="errors-block" id="password-auth-error">
+                    <input name="password" type="password" class="small-input-container" placeholder="Your password" id = "password">
+                    <div class="errors-block">
+                        {% if form.password.errors %}{{ form.password.errors.0 }} {% endif %}
                     </div>
                 </div>
             </div>
