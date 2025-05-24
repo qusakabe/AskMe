@@ -17,14 +17,12 @@
 
     const login = document.querySelector('.small-input-container[placeholder="Write login"]');
     const email = document.querySelector('.small-input-container[placeholder="Write email"]');
-    const nickname = document.querySelector('.small-input-container[placeholder="Write nickname"]');
     const password = document.querySelector('.small-input-container[placeholder="Write password"]');
     const repeatPassword = document.querySelector('.small-input-container[placeholder="Repeat password"]');
 
     const inputs = [
         { field: login, errorId: "login-error", validate: validateLogin },
         { field: email, errorId: "email-error", validate: validateEmail },
-        { field: nickname, errorId: "name-error", validate: validateNickname },
         { field: password, errorId: "password-error", validate: validatePassword },
         { field: repeatPassword, errorId: "repeat-password-error", validate: validateRepeatPassword },
     ];
@@ -45,12 +43,8 @@
         checkField(email, "email-error", isValid, "Valid email is required");
     }
 
-    function validateNickname() {
-        checkField(nickname, "name-error", nickname.value.trim() !== "", "Name is required");
-    }
-
     function validatePassword() {
-        checkField(password, "password-error", password.value.length >= 6, "Password must be at least 6 characters");
+        checkField(password, "password-error", password.value.length >= 8, "Password must be at least 8 characters");
     }
 
     function validateRepeatPassword() {
@@ -69,9 +63,6 @@
     }
 });
 
-
-
-
 function validateNewquestion(){
     let valid = true;
 
@@ -85,8 +76,8 @@ function validateNewquestion(){
     const tags_error = document.getElementById("tags-input-error");
 
 
-    if (title.value.trim().length < 20){
-        title_error.textContent = "Your title is shorter than 20 characters.";
+    if (title.value.trim().length < 10){
+        title_error.textContent = "Your title is shorter than 10 characters.";
         title.classList.add("error");
         valid = false;
     } else if(title.value.trim().length > 100){
@@ -98,12 +89,12 @@ function validateNewquestion(){
         title.classList.remove("error");
     }
 
-    if (text.value.trim().length < 20){
-        text_error.textContent = "Your text is shorter than 20 characters.";
+    if (text.value.trim().length < 10){
+        text_error.textContent = "Your text is shorter than 10 characters.";
         text.classList.add("error");
         valid = false;
-    } else if(text.value.trim().length > 1000){
-        text_error.textContent = "Your text is longer than 1000 characters.";
+    } else if(text.value.trim().length > 5000){
+        text_error.textContent = "Your text is longer than 5000 characters.";
         text.classList.add("error");
         valid = false;
     } else {
@@ -145,38 +136,9 @@ function validateAnswer(){
     return valid;
 }
 
-function validateForm() {
-    let valid = true;
-    const loginField = document.getElementById("login");
-    const passwordField = document.getElementById("password");
-    const loginError = document.getElementById("login-auth-error");
-    const passwordError = document.getElementById("password-auth-error");
 
-    if (loginField.value.trim() !== "TestUser"){
-        valid = false;
-        loginError.textContent = "No user with this login!";
-        loginField.classList.add("error");
-    } else{
-        loginError.textContent = "";
-        loginField.classList.remove("error");
-        if (passwordField.value.trim() !== "123456"){
-            valid = false;
-            passwordError.textContent = "Uncorrect password!";
-            passwordField.classList.add("error");
-        } else {
-            passwordError.textContent = "";
-            passwordField.classList.remove("error");
-        }
-    }
-
-    return valid;
-  
-  }
-
-// Находим все контейнеры с рейтингом
 const ratingBoxes = document.querySelectorAll('.raiting-box');
 
-// Перебираем каждый контейнер и добавляем обработчики событий
 ratingBoxes.forEach((ratingBox) => {
     const likeButton = ratingBox.querySelector('.like-button');
     const dislikeButton = ratingBox.querySelector('.dislike-button');
@@ -186,7 +148,6 @@ ratingBoxes.forEach((ratingBox) => {
     let dislikeActive = false;
     let count = parseInt(counter.textContent.trim());
 
-    // Лайк - обработчик
     likeButton.addEventListener('mouseenter', () => {
         if (!likeActive) {
             ratingBox.classList.add('green');
@@ -198,7 +159,6 @@ ratingBoxes.forEach((ratingBox) => {
         }
     });
 
-    // Дизлайк - обработчик
     dislikeButton.addEventListener('mouseenter', () => {
         if (!dislikeActive) {
             ratingBox.classList.add('red');
@@ -210,7 +170,6 @@ ratingBoxes.forEach((ratingBox) => {
         }
     });
 
-    // Функция для лайка
     likeButton.addEventListener('click', () => {
         if (likeActive) {
             likeActive = false;
@@ -229,7 +188,6 @@ ratingBoxes.forEach((ratingBox) => {
         updateCounter();
     });
 
-    // Функция для дизлайка
     dislikeButton.addEventListener('click', () => {
         if (dislikeActive) {
             dislikeActive = false;
@@ -248,7 +206,6 @@ ratingBoxes.forEach((ratingBox) => {
         updateCounter();
     });
 
-    // Функция обновления счетчика
     function updateCounter() {
         counter.textContent = count;
     }
