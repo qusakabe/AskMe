@@ -1,6 +1,6 @@
 {% load static %}
 
-<div class="answer">
+<div class="answer" id="answer-{{ answer.id }}">
     <img src="{% static 'img/avatar.jpg' %}" alt="Фото" class="profile-image">
     <div class="answer-info">
         <div class="answer-text-mini">{{ answer.text}}</div>
