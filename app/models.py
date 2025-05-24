@@ -105,7 +105,7 @@ class AnswerLike(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Автор", related_name='profile', db_index=True)
-    avatar = models.ImageField(verbose_name="Аватар")
+    avatar = models.ImageField(verbose_name="Аватар", upload_to='profiles/avatars/')
 
     class Meta:
         verbose_name = "Профиль"
