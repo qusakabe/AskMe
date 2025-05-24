@@ -22,9 +22,16 @@
             {% include 'pagination.html' %}
         {% endif %}
         <div class="base-headline">You Answer</div>
-            <form method="post" onsubmit="return validateAnswer();">
-                <textarea class="input-container" placeholder="You answer here...." id="answer-input"></textarea>
-                <div class="errors-block" id="new-answer-error"></div>
+            <form method="post">
+                {% csrf_token %}
+                <textarea class="input-container{% if form.text.errors %} error{% endif %}"
+                          name="text"
+                          type="text"
+                          placeholder="You answer here...."
+                          id="answer-input">{% if form.text.value %}{{ form.text.value }}{% endif %}</textarea>
+                <div class="errors-block" id="new-answer-error">
+                    {% if form.text.errors %}{{ form.text.errors.0 }}{% endif %}
+                </div>
                 <button type="submit" class="base-blue-button">
                     <div class="base-blue-text">Answer</div>
                 </button>
