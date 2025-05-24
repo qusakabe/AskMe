@@ -6,31 +6,59 @@
 {% endblock %}
 
 {% block headline %}
-    <div class="base-headline">Settings: Dr. Pepper</div>
+    <div class="base-headline">Settings: {{ request.user.first_name }}</div>
 {% endblock %}
 
 {% block main %}
     <div class="settings-block">
-        <form method="post" class="settings-form-container">
+        <form method="post" class="settings-form-container" enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="settings-input-container">
                 <div class="settings-form-headline">Avatar:</div>
                 <div class="chose-image-block">
-                    <img src="{% static 'img/avatar.jpg' %}" alt="Фото профиля" class="profile-image" id="profile-image-preview">
+                    <img src="{% if request.user.profile.avatar %}{{ request.user.profile.avatar.url }}{% else %}{% static 'img/avatar.jpg' %}{% endif %}" alt="Фото профиля" class="profile-image" id="profile-image-preview">
                     <label for="image-upload" class = "no-color-button">Choose file</label>
-                    <input type="file" id="image-upload" accept="image/*">
+                    <input name="avatar" type="file" id="image-upload" accept="image/*">
                 </div>
             </div>
+            <div>
             <div class="settings-input-container">
                 <div class="settings-form-headline">Login:</div>
-                <textarea class="small-input-container" placeholder="">Dr. Pepper</textarea>
+                    <input class="small-input-container{% if form.username.errors %} error{% endif %}"
+                       name="username"
+                       placeholder=""
+                       type="text"
+                       value="{{ form.username.value }}">
             </div>
-            <div class="settings-input-container">
-                <div class="settings-form-headline">Email:</div>
-                <textarea class="small-input-container" placeholder="">dr.pepper@mail.ru</textarea>
+                <div class="settings-errors-block" id="login-error">
+                        {% if form.username.errors %}{{ form.username.errors.0 }}{% endif %}
+                </div>
             </div>
-            <div class="settings-input-container">
-                <div class="settings-form-headline">Name:</div>
-                <textarea class="small-input-container" placeholder="">Dr. Pepper</textarea>
+            <div>
+                <div class="settings-input-container">
+                    <div class="settings-form-headline">Email:</div>
+                    <input class="small-input-container{% if form.email.errors %} error{% endif %}"
+                           name="email"
+                           placeholder=""
+                           type="email"
+                           value="{{ form.email.value }}">
+                </div>
+                <div class="settings-errors-block">
+                        {% if form.email.errors %}{{ form.email.errors.0 }}{% endif %}
+                </div>
+            </div>
+            <div>
+                <div class="settings-input-container">
+                    <div class="settings-form-headline">Name:</div>
+                        <input class="small-input-container{% if form.name.errors %} error{% endif %}"
+                               name="first_name"
+                               type="text"
+                               value="{{ form.first_name.value }}"
+                               placeholder="">
+                </div>
+                <div class="settings-errors-block">
+                        {% if form.first_name.errors %}{{ form.first_name.errors.0 }}{% endif %}
+                </div>
             </div>
             <div class="buttons-container">
                 <button type="submit" class="base-blue-button">
