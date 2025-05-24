@@ -12,52 +12,76 @@
 
 {% block main %}
     <div class="signup-block">
-        <form method="post" class="signup-form-container">
+        <form method="post" class="signup-form-container" enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="signup-input-container">
                 <div class="signup-form-headline">Avatar:</div>
                 <div class="chose-image-block">
                     <img src="{% static 'img/avatar.jpg' %}" alt="Фото профиля" class="profile-image" id="profile-image-preview">
                     <label for="image-upload" class = "no-color-button">Choose file</label>
-                    <input type="file" id="image-upload" accept="image/*">
+                    <input type="file" id="image-upload" accept="image/*" name="avatar">
                 </div>
             </div>
             <div class="signup-input-container">
                 <div class="signup-form-headline">Login:</div>
                 <div class="input-field">
-                    <textarea class="small-input-container" placeholder="Write login"></textarea>
+                    <input name="username"
+                           type="text"
+                           value="{% if form.username.value %}{{ form.username.value }}{% endif %}"
+                           class="small-input-container {% if form.username.errors %} error{% endif %}"
+                           placeholder="Write login">
                     <div class="errors-block" id="login-error">
+                        {% if form.username.errors %}{{ form.username.errors.0 }}{% endif %}
                     </div>
                 </div>
             </div>
             <div class="signup-input-container">
                 <div class="signup-form-headline">Email:</div>
                 <div class="input-field">
-                    <textarea class="small-input-container" placeholder="Write email"></textarea>
+                    <input name = 'email'
+                           type="email"
+                           value = "{% if form.email.value %}{{ form.email.value }}{% endif %}"
+                           class="small-input-container{% if form.email.errors %} error{% endif %}"
+                           placeholder="Write email">
                     <div class="errors-block" id="email-error">
+                        {% if form.email.errors %}{{ form.email.errors.0 }}{% endif %}
                     </div>
                 </div>
             </div>
             <div class="signup-input-container">
                 <div class="signup-form-headline">Name:</div>
                 <div class="input-field">
-                    <textarea class="small-input-container" placeholder="Write nickname"></textarea>
+                    <input name="first_name"
+                           type="text"
+                           value="{% if form.first_name.value %}{{ form.first_name.value }}{% endif %}"
+                           class="small-input-container{% if form.first_name.errors %} error{% endif %}"
+                           placeholder="Write nickname">
                     <div class="errors-block" id="name-error">
+                        {% if form.first_name.errors %}{{ form.first_name.errors.0 }}{% endif %}
                     </div>
                 </div>
             </div>
             <div class="signup-input-container">
                 <div class="signup-form-headline">Password:</div>
                 <div class="input-field">
-                    <textarea class="small-input-container" placeholder="Write password"></textarea>
+                    <input name="password"
+                           type="password"
+                           class="small-input-container{% if form.password.errors %} error{% endif %}"
+                           placeholder="Write password">
                     <div class="errors-block" id="password-error">
+                        {% if form.password.errors %}{{ form.password.errors.0 }}{% endif %}
                     </div>
                 </div>
             </div>
             <div class="signup-input-container">
                 <div class="signup-form-headline">Repeat Password:</div>
                 <div class="input-field">
-                    <textarea class="small-input-container" placeholder="Repeat password"   style="margin-top: 8px;"></textarea>
+                    <input name="password_confirmation"
+                           type="password"
+                           class="small-input-container{% if form.password_confirmation.errors %} error{% endif %}"
+                           placeholder="Repeat password"   style="margin-top: 8px;">
                     <div class="errors-block"  id="repeat-password-error">
+                        {% if form.password_confirmation.errors %}{{ form.password_confirmation.errors.0 }}{% endif %}
                     </div>
                 </div>
             </div>
