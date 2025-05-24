@@ -1,10 +1,10 @@
 {% load static %}
 
-<img src="{% static 'img/avatar.jpg' %}" alt="" class="account-image">
-<div class="account-name">Dr. Peper</div>
+<img src="{% if request.user.profile.avatar %}{{ request.user.profile.avatar.url }}{% else %}{% static 'img/avatar.jpg' %}{% endif %}" alt="" class="account-image">
+<div class="account-name">{{request.user.first_name}}</div>
 <a class="settings-button" href="{% url 'settings' %}">
     <img src="{% static 'img/account_actions_icons/settings-icon.svg' %}" alt="Settings" class="settings-icon">
 </a>
-<a class="log-out-button">
+<a class="log-out-button" href="{% url 'logout' %}?continue={{ request.path }}">
     <img src="{% static 'img/account_actions_icons/log-out-icon.svg' %}" alt="Settings" class="log-out-icon">
 </a>

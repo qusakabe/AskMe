@@ -19,7 +19,7 @@
             <button class="button-search">Search</button>
         </div>
         <div class="account-actions">
-            {% if not request.user.is_authenticated %}
+            {% if request.user.is_authenticated %}
                 {% include 'base_authorized.html' %}
             {% else %}
                 {% include 'base_unauthorized.html' %}
