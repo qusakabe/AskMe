@@ -12,7 +12,9 @@ urlpatterns = [
     path('settings/', views.settings, name='settings'),
     path('tag/<int:id>/', views.tag, name='tag'),
     path('hot/', views.hot, name='hot'),
-    path('logout/',views.logout_view,name='logout')
+    path('logout/',views.logout_view,name='logout'),
+    path('toggle-correct/', views.toggle_correct, name='toggle_correct'),
+    path('rate/', views.rate_view, name='rate'),
 ]
 
 if settings.DEBUG:
