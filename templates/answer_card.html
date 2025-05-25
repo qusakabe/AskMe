@@ -1,11 +1,13 @@
 {% load static %}
 
 <div class="answer" id="answer-{{ answer.id }}">
-    <img src="{% static 'img/avatar.jpg' %}" alt="Фото" class="profile-image">
+    <img src="{% if answer.author.profile.avatar %}{{ answer.author.profile.avatar.url }}{% else %} {% static 'img/avatar.jpg' %} {% endif %}" alt="Фото" class="profile-image">
     <div class="answer-info">
-        <div class="answer-text-mini">{{ answer.text}}</div>
+        <div class="answer-text-mini">{{ answer.text }}</div>
         <div class="raiting-answers-container">
-            <div class="raiting-box">
+            <div class="raiting-box{% if answer.user_rate.is_dislike %} red {% elif answer.user_rate.is_dislike != None %} green {% endif %}"
+                 data-object-id="{{ answer.id }}"
+                 data-object-type="answer">
                 <div class="raiting-counter">{{ answer.rating }}</div>
                 <div class="like-button" onclick="return Like();">
                     <img src="{% static 'img/raiting_buttons/like.svg' %}" alt="Like" class="like-button">
@@ -14,10 +16,20 @@
                     <img src="{% static 'img/raiting_buttons/dislike.svg' %}" alt="Dislike" class="dislike-button">
                 </div>
             </div>
-            <button class="correct-button" id="correct-button">
-                <img id="correct-icon" class="correct-icon" src="{% static 'img/correct-icon.svg' %}">
-                mark correct
-            </button>
+            {% if request.user == question.author %}
+                    <button class="correct-button {% if answer.is_correct %} correct{% endif %}"
+                            id="correct-button"
+                            data-answer-id="{{ answer.id }}"
+                            data-is-correct="{{ answer.is_correct|yesno:'true,false' }}">
+                        <img id="correct-icon" class="correct-icon" src="{% static 'img/correct-icon.svg' %}"style="{% if answer.is_correct %}display:block;{% endif %}">
+                        {% if answer.is_correct %} correct {% else %} mark correct {% endif %}
+                    </button>
+            {% elif answer.is_correct %}
+                <div class="correct-info correct">
+                    <img class="correct-icon" src="{% static 'img/correct-icon.svg' %}" style="display:block;">
+                    correct
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>

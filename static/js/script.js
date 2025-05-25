@@ -144,81 +144,113 @@ ratingBoxes.forEach((ratingBox) => {
     const dislikeButton = ratingBox.querySelector('.dislike-button');
     const counter = ratingBox.querySelector('.raiting-counter');
 
-    let likeActive = false;
-    let dislikeActive = false;
+    const objectId = ratingBox.dataset.objectId;
+    const objectType = ratingBox.dataset.objectType;
+
+    let likeActive = ratingBox.classList.contains('green');
+    let dislikeActive = ratingBox.classList.contains('red');
     let count = parseInt(counter.textContent.trim());
 
     likeButton.addEventListener('mouseenter', () => {
-        if (!likeActive) {
-            ratingBox.classList.add('green');
-        }
+        ratingBox.classList.remove('green', 'red');
+        if (!likeActive) ratingBox.classList.add('green');
     });
+
     likeButton.addEventListener('mouseleave', () => {
-        if (!likeActive) {
-            ratingBox.classList.remove('green');
-        }
+        if (!likeActive) ratingBox.classList.remove('green');
+        checkColor();
     });
 
     dislikeButton.addEventListener('mouseenter', () => {
-        if (!dislikeActive) {
-            ratingBox.classList.add('red');
-        }
+        ratingBox.classList.remove('green', 'red');
+        if (!dislikeActive) ratingBox.classList.add('red');
     });
+
     dislikeButton.addEventListener('mouseleave', () => {
-        if (!dislikeActive) {
-            ratingBox.classList.remove('red');
-        }
+        if (!dislikeActive) ratingBox.classList.remove('red');
+        checkColor();
     });
 
-    likeButton.addEventListener('click', () => {
-        if (likeActive) {
-            likeActive = false;
-            ratingBox.classList.remove('green');
-            count--;
-        } else {
-            likeActive = true;
+    likeButton.addEventListener('click', () => sendVote('like'));
+    dislikeButton.addEventListener('click', () => sendVote('dislike'));
+
+    function checkColor() {
+        if (likeActive) ratingBox.classList.add('green');
+        if (dislikeActive) ratingBox.classList.add('red');
+    }
+
+   function sendVote(action) {
+    fetch('/rate/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: JSON.stringify({
+            type: objectType,
+            id: objectId,
+            action: action,
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
+
+        count = data.rating;
+        updateCounter();
+
+        ratingBox.classList.remove('green', 'red');
+        console.log(data.status)
+        if (data.status === 'liked') {
             ratingBox.classList.add('green');
-            if (dislikeActive) {
-                dislikeActive = false;
-                ratingBox.classList.remove('red');
-                count++;
-            }
-            count++;
-        }
-        updateCounter();
-    });
-
-    dislikeButton.addEventListener('click', () => {
-        if (dislikeActive) {
+            likeActive = true;
             dislikeActive = false;
-            ratingBox.classList.remove('red');
-            count++;
-        } else {
-            dislikeActive = true;
+        } else if (data.status === 'disliked') {
             ratingBox.classList.add('red');
-            if (likeActive) {
-                likeActive = false;
-                ratingBox.classList.remove('green');
-                count--;
-            }
-            count--;
+            likeActive = false;
+            dislikeActive = true;
+        } else if (data.status === 'switched'){
+            likeActive = !likeActive;
+            dislikeActive = !dislikeActive;
+
+            ratingBox.classList.toggle('green', likeActive);
+            ratingBox.classList.toggle('red', dislikeActive);
+        } else if (data.status == 'cleared'){
+            likeActive = false;
+            dislikeActive = false;
         }
-        updateCounter();
+    })
+    .catch(error => {
+        console.error("Voting error:", error);
     });
+}
+
 
     function updateCounter() {
         counter.textContent = count;
     }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            document.cookie.split(';').forEach(cookie => {
+                const [key, value] = cookie.trim().split('=');
+                if (key === name) cookieValue = decodeURIComponent(value);
+            });
+        }
+        return cookieValue;
+    }
 });
+
 
 
 const prevButton = document.getElementById("prev");
 const nextButton = document.getElementById("next");
 const pagesContainer = document.getElementById("pages-container");
-const paginationElement = document.querySelector(".pagination"); // Исправлено на querySelector
-
-
-
+const paginationElement = document.querySelector(".pagination");
 
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -322,13 +354,13 @@ const availableTags = [
 
 const tagInput = document.getElementById("tags");
 
-if (tagInput) { // Только если инпут есть на странице
+if (tagInput) {
     $("#tags").autocomplete({
         source: function(request, response) {
             let currentValue = request.term;
-            let lastTag = currentValue.split(',').pop().trim(); // Получаем последний введенный тег
+            let lastTag = currentValue.split(',').pop().trim();
 
-            if (lastTag === "") return; // Если последний тег пустой — не показываем подсказки
+            if (lastTag === "") return;
 
             let filteredTags = availableTags.filter(tag => 
                 tag.toLowerCase().startsWith(lastTag.toLowerCase())
@@ -338,7 +370,7 @@ if (tagInput) { // Только если инпут есть на страниц
         },
         minLength: 1,
         focus: function(event, ui) {
-            event.preventDefault(); // Предотвращаем замену всего текста при наведении стрелками
+            event.preventDefault();
         },
         select: function(event, ui) {
             let currentValue = $("#tags").val();
@@ -391,23 +423,48 @@ if (tagInput) { // Только если инпут есть на страниц
 }
 
 document.querySelectorAll('.correct-button').forEach(button => {
-    let correctFlag = false;
-    
-    button.addEventListener('click', () => {
-        const checkIcon = button.querySelector('.correct-icon');
+    const answerId = button.dataset.answerId;
+    let correctFlag = button.dataset.isCorrect === 'true';
+    const checkIcon = button.querySelector('.correct-icon');
 
-        if (correctFlag) {
-            button.classList.remove("correct");
-            button.textContent = "mark correct";
-            button.appendChild(checkIcon); // Вернуть иконку в кнопку
-            checkIcon.style.display = "none";
-            correctFlag = false;
-        } else {
-            button.classList.add("correct");
-            button.textContent = "correct";
-            button.insertBefore(checkIcon, button.firstChild); // Переместить иконку в начало
-            checkIcon.style.display = "block";
-            correctFlag = true;
-        }
+    button.addEventListener('click', () => {
+        fetch('/toggle-correct/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({ answer_id: answerId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            correctFlag = data.is_correct;
+
+            if (correctFlag) {
+                button.classList.add("correct");
+                button.textContent = "correct";
+                button.insertBefore(checkIcon, button.firstChild);
+                checkIcon.style.display = "block";
+            } else {
+                button.classList.remove("correct");
+                button.textContent = "mark correct";
+                button.appendChild(checkIcon);
+                checkIcon.style.display = "none";
+            }
+
+            button.dataset.isCorrect = correctFlag ? 'true' : 'false';
+        })
+        .catch(error => console.error('Error:', error));
     });
 });
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        document.cookie.split(';').forEach(cookie => {
+            const [key, value] = cookie.trim().split('=');
+            if (key === name) cookieValue = decodeURIComponent(value);
+        });
+    }
+    return cookieValue;
+}

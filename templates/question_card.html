@@ -1,7 +1,7 @@
 {% load static %}
 
 <div class="question">
-    <img src="{% static 'img/avatar.jpg' %}" alt="Фото профиля" class="profile-image">
+    <img src="{% if question.author.profile.avatar %} {{ question.author.profile.avatar.url }} {% else %} {% static 'img/avatar.jpg' %} {% endif %}" alt="Фото профиля" class="profile-image">
     <div class="question-info">
         <a class="question-text" href="{% url 'question' id=question.id %}">{{ question.title }}</a>
         <div class="question-text-mini">{{ question.description }}</div>
@@ -17,7 +17,7 @@
                 {% endif %}
             </div>
             <div class="raiting-answers-container" id="raitingBox">
-                <div class="raiting-box">
+                <div class="raiting-box{% if question.user_rate.is_dislike %} red {% elif question.user_rate.is_dislike != None %} green {% endif %}" data-object-type="question" data-object-id="{{ question.id }}" >
                     <div class="raiting-counter" id="counter">{{ question.rating|floatformat:0 }}</div>
                     <div class="like-button" id="likeButton" onclick="return Like();">
                         <img src="{% static 'img/raiting_buttons/like.svg' %}" alt="Like" class="like-button">
