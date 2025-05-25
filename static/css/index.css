@@ -696,14 +696,15 @@
     }
 
     .raiting-box.green{
-        border-color: var(--green);
-        background-color: var(--light-green);
+        border-color: var(--green) !important;
+        background-color: var(--light-green) !important;
     }
 
     .raiting-box.red{
-        border-color: var(--red);
-        background-color: var(--light-red);
+        border-color: var(--red) !important;
+        background-color: var(--light-red) !important;
     }
+
 
     .pagination {
         display: flex;
@@ -781,7 +782,7 @@
     }
 
 
-    .correct-button{
+    .correct-button, .correct-info{
         background: none;
         border: 1px solid var(--green);
         color: var(--green);
@@ -798,7 +799,7 @@
      background-color: var(--light-green);
     }
 
-    .correct-button.correct{
+    .correct-button.correct, .correct-info.correct{
         color: var(--white);
         background-color: var(--green);
     }
